@@ -1,1 +1,1070 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>n8n Workflow Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE6;
+    --border: #E2DDD5;
+    --text: #1A1814;
+    --text2: #5A5650;
+    --text3: #8A8680;
+    --accent: #FF5733;
+    --accent2: #1A6BFF;
+    --accent3: #00B87C;
+    --accent4: #9B59B6;
+    --tag-bg: #FFF3F0;
+    --tag-text: #CC3311;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .header-badge {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #FFCCBB;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 64px 48px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .hero-tag span { color: var(--accent); font-size: 14px; }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .hero-desc {
+    font-size: 17px;
+    color: var(--text2);
+    max-width: 600px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1.5px solid var(--border);
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+  .stat-label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text3);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--border);
+  }
+
+  /* ── WORKFLOW VISUAL ── */
+  .workflow-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .workflow-header {
+    padding: 20px 28px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+  }
+  .workflow-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .workflow-subtitle { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .wf-tabs { display: flex; gap: 4px; }
+  .wf-tab {
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text3);
+    cursor: default;
+  }
+  .wf-tab.active { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+  .workflow-canvas {
+    padding: 32px;
+    background: #FAFAF8;
+    overflow-x: auto;
+  }
+
+  /* SVG workflow diagram */
+  .wf-svg-wrap { min-width: 800px; }
+
+  /* ── NODE LIST ── */
+  .nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .node-pill {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: default;
+  }
+  .node-pill:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .node-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .node-info { flex: 1; min-width: 0; }
+  .node-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-section { font-size: 11px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .node-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 2px 7px;
+  }
+
+  /* ── PARAMS ACCORDION ── */
+  .params-list { display: flex; flex-direction: column; gap: 12px; }
+  .param-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .param-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s;
+  }
+  .param-header:hover { background: var(--surface2); }
+  .param-icon {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .param-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    flex: 1;
+  }
+  .param-section-tag {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 9px;
+    border-radius: 10px;
+  }
+  .s1 { background: #FFE8E3; color: #CC2200; }
+  .s2 { background: #E3F5EE; color: #0A6040; }
+  .s3 { background: #E3EDFF; color: #0040CC; }
+  .chevron {
+    font-size: 12px;
+    color: var(--text3);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .param-card.open .chevron { transform: rotate(180deg); }
+  .param-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1.5px solid var(--border);
+  }
+  .param-card.open .param-body { display: block; }
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13.5px;
+  }
+  .param-table th {
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-bottom: 1.5px solid var(--border);
+  }
+  .param-table th:first-child { border-radius: 8px 0 0 0; }
+  .param-table th:last-child { border-radius: 0 8px 0 0; }
+  .param-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .param-table tr:last-child td { border-bottom: none; }
+  .param-table tr:hover td { background: #FAFAF8; }
+  .param-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .param-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    background: #F5F3EE;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 8px;
+    display: inline-block;
+    color: var(--text);
+  }
+  .param-desc { color: var(--text2); font-size: 13px; }
+  .note-box {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text2);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .note-box.info { background: #EEF4FF; border-left: 3px solid var(--accent2); }
+  .note-box.tip  { background: #EEFAF5; border-left: 3px solid var(--accent3); }
+  .note-box.warn { background: #FFF8EC; border-left: 3px solid #F0A020; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px 48px;
+    border-top: 1.5px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    background: var(--surface);
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 20px; }
+    .hero, main { padding-left: 20px; padding-right: 20px; }
+    h1 { font-size: 36px; }
+    .nodes-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { flex-wrap: wrap; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">n</div>
+    n8n Workflow Docs
+  </a>
+  <span class="header-badge">Lead Enrichment + Email Outreach</span>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag"><span>⚡</span> Automation Workflow</div>
+  <h1>AI-Powered <em>Lead</em><br>Email Outreach</h1>
+  <p class="hero-desc">
+    A fully automated n8n workflow that pulls business data from an API, uses Google Gemini AI to extract email addresses, logs leads to Google Sheets, and sends personalised outreach emails.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">15</span><span class="stat-label">Nodes</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Sections</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">AI Models</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">Google Sheets</span></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── SECTION: WORKFLOW VISUAL ── -->
+  <div>
+    <div class="section-title">Workflow Overview</div>
+    <div class="workflow-card">
+      <div class="workflow-header">
+        <div>
+          <div class="workflow-title">Lead Enrichment & Email Send Pipeline</div>
+          <div class="workflow-subtitle">Visual representation of all nodes and connections</div>
+        </div>
+        <div class="wf-tabs">
+          <div class="wf-tab active">Editor</div>
+          <div class="wf-tab">Executions</div>
+          <div class="wf-tab">Evaluations</div>
+        </div>
+      </div>
+      <div class="workflow-canvas">
+        <div class="wf-svg-wrap">
+<svg width="100%" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" style="font-family:'DM Sans',sans-serif;">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#AAAAAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#CCCCCC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ═══ SECTION 1: Business Data ═══ -->
+  <rect x="30" y="18" width="500" height="110" rx="12" fill="none" stroke="#E84040" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.7"/>
+  <text x="46" y="14" font-size="11" font-weight="700" fill="#E84040" font-family="'Syne',sans-serif" letter-spacing="1">BUSINESS DATA</text>
+
+  <!-- On Form Submission -->
+  <rect x="48" y="38" width="116" height="72" rx="10" fill="#E84040"/>
+  <rect x="48" y="38" width="116" height="72" rx="10" fill="none" stroke="#C03030" stroke-width="1"/>
+  <text x="106" y="66" text-anchor="middle" font-size="22" fill="white">📋</text>
+  <text x="106" y="84" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">On form</text>
+  <text x="106" y="97" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.85)" font-family="'DM Sans',sans-serif">submission</text>
+
+  <!-- Arrow 1 -->
+  <line x1="164" y1="74" x2="196" y2="74" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="180" y="68" text-anchor="middle" font-size="9" fill="#AAAAAA">1 item</text>
+
+  <!-- HTTP Request -->
+  <rect x="196" y="38" width="116" height="72" rx="10" fill="#2962E8"/>
+  <rect x="196" y="38" width="116" height="72" rx="10" fill="none" stroke="#1A50C8" stroke-width="1"/>
+  <text x="254" y="66" text-anchor="middle" font-size="22" fill="white">🌐</text>
+  <text x="254" y="84" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">HTTP Request</text>
+  <text x="254" y="97" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)" font-family="'DM Mono',monospace">GET shopify</text>
+
+  <!-- Arrow 2 -->
+  <line x1="312" y1="74" x2="344" y2="74" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="328" y="68" text-anchor="middle" font-size="9" fill="#AAAAAA">5 items</text>
+
+  <!-- Filter -->
+  <rect x="344" y="38" width="116" height="72" rx="10" fill="#0A9E70"/>
+  <rect x="344" y="38" width="116" height="72" rx="10" fill="none" stroke="#087A54" stroke-width="1"/>
+  <text x="402" y="66" text-anchor="middle" font-size="22" fill="white">🔽</text>
+  <text x="402" y="84" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Filter</text>
+  <text x="402" y="97" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">conditions</text>
+
+  <!-- ═══ SECTION 2: Getting Email ═══ -->
+  <rect x="30" y="150" width="640" height="160" rx="12" fill="none" stroke="#0A9E70" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.7"/>
+  <text x="46" y="146" font-size="11" font-weight="700" fill="#0A9E70" font-family="'Syne',sans-serif" letter-spacing="1">GETTING THE EMAIL ADDRESS</text>
+
+  <!-- Google Gemini Model (left, for sec2) -->
+  <rect x="42" y="248" width="110" height="52" rx="9" fill="#F5F3EE" stroke="#E2DDD5" stroke-width="1.5"/>
+  <text x="97" y="269" text-anchor="middle" font-size="16" fill="#1A6BFF">G</text>
+  <text x="97" y="283" text-anchor="middle" font-size="9" font-weight="600" fill="#5A5650" font-family="'Syne',sans-serif">Gemini Chat</text>
+  <text x="97" y="295" text-anchor="middle" font-size="8.5" fill="#8A8680">Model</text>
+  <!-- dashed line from Gemini to InfoExtractor -->
+  <path d="M97 248 L97 235 L175 235 L175 215" stroke="#BBBBBB" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
+
+  <!-- Arrow from Section 1 Filter down -->
+  <path d="M402 110 L402 168 L175 168 L175 170" stroke="#AAAAAA" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arr)"/>
+
+  <!-- Information Extractor -->
+  <rect x="120" y="170" width="116" height="72" rx="10" fill="#7C3DBF"/>
+  <rect x="120" y="170" width="116" height="72" rx="10" fill="none" stroke="#5E2A9A" stroke-width="1"/>
+  <text x="178" y="198" text-anchor="middle" font-size="20" fill="white">🔍</text>
+  <text x="178" y="216" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Information</text>
+  <text x="178" y="229" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.85)">Extractor</text>
+
+  <!-- Arrow to IF -->
+  <line x1="236" y1="206" x2="268" y2="206" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="252" y="200" text-anchor="middle" font-size="9" fill="#AAAAAA">4 items</text>
+
+  <!-- IF Node -->
+  <rect x="268" y="170" width="90" height="72" rx="10" fill="#555550"/>
+  <rect x="268" y="170" width="90" height="72" rx="10" fill="none" stroke="#333330" stroke-width="1"/>
+  <text x="313" y="198" text-anchor="middle" font-size="20" fill="white">⚙️</text>
+  <text x="313" y="218" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">IF</text>
+  <text x="313" y="231" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">condition</text>
+
+  <!-- IF → Append (true) -->
+  <line x1="358" y1="196" x2="395" y2="196" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="376" y="190" text-anchor="middle" font-size="9" fill="#0A9E70">✓ true</text>
+
+  <!-- Append row in sheet -->
+  <rect x="395" y="170" width="126" height="72" rx="10" fill="#0A9E70"/>
+  <rect x="395" y="170" width="126" height="72" rx="10" fill="none" stroke="#087A54" stroke-width="1"/>
+  <text x="458" y="198" text-anchor="middle" font-size="20" fill="white">📊</text>
+  <text x="458" y="216" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Append row</text>
+  <text x="458" y="229" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)">in sheet</text>
+
+  <!-- IF → No Operation (false) -->
+  <path d="M313 242 L313 290 L430 290" stroke="#AAAAAA" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arr)"/>
+  <text x="340" y="285" font-size="9" fill="#E84040">✗ false</text>
+
+  <!-- No Operation -->
+  <rect x="430" y="265" width="130" height="45" rx="9" fill="#F0EDE6" stroke="#E2DDD5" stroke-width="1.5"/>
+  <text x="495" y="284" text-anchor="middle" font-size="11" font-weight="600" fill="#5A5650" font-family="'Syne',sans-serif">No Operation</text>
+  <text x="495" y="298" text-anchor="middle" font-size="9" fill="#8A8680">do nothing</text>
+
+  <!-- ═══ SECTION 3: Email Send ═══ -->
+  <rect x="30" y="340" width="850" height="175" rx="12" fill="none" stroke="#2962E8" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.7"/>
+  <text x="46" y="336" font-size="11" font-weight="700" fill="#2962E8" font-family="'Syne',sans-serif" letter-spacing="1">EMAIL SEND</text>
+
+  <!-- Loop Over Items -->
+  <rect x="48" y="358" width="108" height="72" rx="10" fill="#F59D00"/>
+  <rect x="48" y="358" width="108" height="72" rx="10" fill="none" stroke="#CC8000" stroke-width="1"/>
+  <text x="102" y="386" text-anchor="middle" font-size="20" fill="white">🔄</text>
+  <text x="102" y="404" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Loop Over</text>
+  <text x="102" y="417" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)">Items</text>
+
+  <!-- Arrow -->
+  <line x1="156" y1="394" x2="184" y2="394" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="170" y="388" text-anchor="middle" font-size="9" fill="#AAAAAA">1</text>
+
+  <!-- Wait -->
+  <rect x="184" y="358" width="96" height="72" rx="10" fill="#8B3DBF"/>
+  <rect x="184" y="358" width="96" height="72" rx="10" fill="none" stroke="#6A2A9A" stroke-width="1"/>
+  <text x="232" y="386" text-anchor="middle" font-size="20" fill="white">⏸️</text>
+  <text x="232" y="404" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Wait</text>
+
+  <!-- Arrow -->
+  <line x1="280" y1="394" x2="308" y2="394" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="294" y="388" text-anchor="middle" font-size="9" fill="#AAAAAA">1</text>
+
+  <!-- Information Extractor 1 -->
+  <rect x="308" y="358" width="128" height="72" rx="10" fill="#7C3DBF"/>
+  <rect x="308" y="358" width="128" height="72" rx="10" fill="none" stroke="#5E2A9A" stroke-width="1"/>
+  <text x="372" y="386" text-anchor="middle" font-size="20" fill="white">🔍</text>
+  <text x="372" y="404" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Information</text>
+  <text x="372" y="417" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)">Extractor 1</text>
+
+  <!-- Gemini Model 1 (bottom) -->
+  <rect x="320" y="455" width="110" height="52" rx="9" fill="#F5F3EE" stroke="#E2DDD5" stroke-width="1.5"/>
+  <text x="375" y="476" text-anchor="middle" font-size="16" fill="#1A6BFF">G</text>
+  <text x="375" y="490" text-anchor="middle" font-size="9" font-weight="600" fill="#5A5650" font-family="'Syne',sans-serif">Gemini Chat</text>
+  <text x="375" y="502" text-anchor="middle" font-size="8.5" fill="#8A8680">Model 1</text>
+  <!-- dashed up -->
+  <path d="M375 455 L375 430" stroke="#BBBBBB" stroke-width="1" stroke-dasharray="4 3" fill="none" marker-end="url(#arr)"/>
+
+  <!-- Arrow -->
+  <line x1="436" y1="394" x2="464" y2="394" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="450" y="388" text-anchor="middle" font-size="9" fill="#AAAAAA">1</text>
+
+  <!-- Edit Fields1 -->
+  <rect x="464" y="358" width="104" height="72" rx="10" fill="#0A9E70"/>
+  <rect x="464" y="358" width="104" height="72" rx="10" fill="none" stroke="#087A54" stroke-width="1"/>
+  <text x="516" y="386" text-anchor="middle" font-size="20" fill="white">✏️</text>
+  <text x="516" y="404" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Edit Fields1</text>
+  <text x="516" y="417" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)">manual</text>
+
+  <!-- Arrow -->
+  <line x1="568" y1="394" x2="596" y2="394" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="582" y="388" text-anchor="middle" font-size="9" fill="#AAAAAA">1</text>
+
+  <!-- Send a message (Gmail) -->
+  <rect x="596" y="358" width="112" height="72" rx="10" fill="#E84040"/>
+  <rect x="596" y="358" width="112" height="72" rx="10" fill="none" stroke="#C03030" stroke-width="1"/>
+  <text x="652" y="386" text-anchor="middle" font-size="20" fill="white">✉️</text>
+  <text x="652" y="404" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Send a message</text>
+  <text x="652" y="417" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)">Gmail</text>
+
+  <!-- Arrow -->
+  <line x1="708" y1="394" x2="736" y2="394" stroke="#AAAAAA" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="722" y="388" text-anchor="middle" font-size="9" fill="#AAAAAA">1</text>
+
+  <!-- Append or Update Row -->
+  <rect x="736" y="358" width="128" height="72" rx="10" fill="#0A9E70"/>
+  <rect x="736" y="358" width="128" height="72" rx="10" fill="none" stroke="#087A54" stroke-width="1"/>
+  <text x="800" y="386" text-anchor="middle" font-size="20" fill="white">📊</text>
+  <text x="800" y="403" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="'Syne',sans-serif">Append/Update</text>
+  <text x="800" y="416" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.85)">row in sheet</text>
+
+  <!-- Section label connector -->
+  <path d="M458 315 L102 340" stroke="#AAAAAA" stroke-width="1" stroke-dasharray="5 3" fill="none" marker-end="url(#arr)"/>
+
+</svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION: NODE LIST ── -->
+  <div>
+    <div class="section-title">All Nodes Used</div>
+    <div class="nodes-grid">
+      <!-- S1 -->
+      <div class="node-pill">
+        <div class="node-icon" style="background:#FFE8E3;">📋</div>
+        <div class="node-info">
+          <div class="node-name">On Form Submission</div>
+          <div class="node-section">Section 1 · Trigger</div>
+        </div>
+        <span class="node-num">01</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#E3EDFF;">🌐</div>
+        <div class="node-info">
+          <div class="node-name">HTTP Request</div>
+          <div class="node-section">Section 1 · Data Fetch</div>
+        </div>
+        <span class="node-num">02</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#E3F5EE;">🔽</div>
+        <div class="node-info">
+          <div class="node-name">Filter</div>
+          <div class="node-section">Section 1 · Logic</div>
+        </div>
+        <span class="node-num">03</span>
+      </div>
+      <!-- S2 -->
+      <div class="node-pill">
+        <div class="node-icon" style="background:#F0EBF9;">🔍</div>
+        <div class="node-info">
+          <div class="node-name">Information Extractor</div>
+          <div class="node-section">Section 2 · AI Node</div>
+        </div>
+        <span class="node-num">04</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#F5F3EE;">⚙️</div>
+        <div class="node-info">
+          <div class="node-name">IF</div>
+          <div class="node-section">Section 2 · Logic</div>
+        </div>
+        <span class="node-num">05</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#E3F5EE;">📊</div>
+        <div class="node-info">
+          <div class="node-name">Append Row in Sheet</div>
+          <div class="node-section">Section 2 · Google Sheets</div>
+        </div>
+        <span class="node-num">06</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#F5F3EE;">⛔</div>
+        <div class="node-info">
+          <div class="node-name">No Operation</div>
+          <div class="node-section">Section 2 · Fallback</div>
+        </div>
+        <span class="node-num">07</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#EEF4FF;">G</div>
+        <div class="node-info">
+          <div class="node-name">Google Gemini Chat Model</div>
+          <div class="node-section">Section 2 · AI Sub-node</div>
+        </div>
+        <span class="node-num">08</span>
+      </div>
+      <!-- S3 -->
+      <div class="node-pill">
+        <div class="node-icon" style="background:#FFF5E0;">🔄</div>
+        <div class="node-info">
+          <div class="node-name">Loop Over Items</div>
+          <div class="node-section">Section 3 · Control</div>
+        </div>
+        <span class="node-num">09</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#F0EBF9;">⏸️</div>
+        <div class="node-info">
+          <div class="node-name">Wait</div>
+          <div class="node-section">Section 3 · Delay</div>
+        </div>
+        <span class="node-num">10</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#F0EBF9;">🔍</div>
+        <div class="node-info">
+          <div class="node-name">Information Extractor 1</div>
+          <div class="node-section">Section 3 · AI Node</div>
+        </div>
+        <span class="node-num">11</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#E3F5EE;">✏️</div>
+        <div class="node-info">
+          <div class="node-name">Edit Fields1</div>
+          <div class="node-section">Section 3 · Transform</div>
+        </div>
+        <span class="node-num">12</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#FFE8E3;">✉️</div>
+        <div class="node-info">
+          <div class="node-name">Send a Message</div>
+          <div class="node-section">Section 3 · Gmail</div>
+        </div>
+        <span class="node-num">13</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#E3F5EE;">📊</div>
+        <div class="node-info">
+          <div class="node-name">Append / Update Row</div>
+          <div class="node-section">Section 3 · Google Sheets</div>
+        </div>
+        <span class="node-num">14</span>
+      </div>
+      <div class="node-pill">
+        <div class="node-icon" style="background:#EEF4FF;">G</div>
+        <div class="node-info">
+          <div class="node-name">Google Gemini Chat Model 1</div>
+          <div class="node-section">Section 3 · AI Sub-node</div>
+        </div>
+        <span class="node-num">15</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION: PARAMETERS ── -->
+  <div>
+    <div class="section-title">Node Parameters</div>
+    <div class="params-list">
+
+      <!-- 01 On Form Submission -->
+      <div class="param-card" id="pc1">
+        <div class="param-header" onclick="toggle('pc1')">
+          <div class="param-icon" style="background:#FFE8E3;">📋</div>
+          <span class="param-title">01 · On Form Submission</span>
+          <span class="param-section-tag s1">Section 1</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Trigger Type</td><td><span class="param-val">On Form Submission</span></td><td class="param-desc">Fires when a form is submitted</td></tr>
+            <tr><td class="param-key">Form Fields</td><td><span class="param-val">company_name, website, etc.</span></td><td class="param-desc">Define fields matching your form</td></tr>
+            <tr><td class="param-key">Authentication</td><td><span class="param-val">None (public form)</span></td><td class="param-desc">Can add Basic Auth if needed</td></tr>
+            <tr><td class="param-key">Respond</td><td><span class="param-val">Using Respond to Webhook node</span></td><td class="param-desc">Controls when response is sent</td></tr>
+          </table>
+          <div class="note-box info">ℹ️ This is the entry point. All subsequent data is based on what this form captures.</div>
+        </div>
+      </div>
+
+      <!-- 02 HTTP Request -->
+      <div class="param-card" id="pc2">
+        <div class="param-header" onclick="toggle('pc2')">
+          <div class="param-icon" style="background:#E3EDFF;">🌐</div>
+          <span class="param-title">02 · HTTP Request</span>
+          <span class="param-section-tag s1">Section 1</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Method</td><td><span class="param-val">GET</span></td><td class="param-desc">Fetches data from the API</td></tr>
+            <tr><td class="param-key">URL</td><td><span class="param-val">https://api.shopify.com/v2/...</span></td><td class="param-desc">Your data source API endpoint</td></tr>
+            <tr><td class="param-key">Authentication</td><td><span class="param-val">Header Auth</span></td><td class="param-desc">Pass API key in header</td></tr>
+            <tr><td class="param-key">Header Name</td><td><span class="param-val">X-Shopify-Access-Token</span></td><td class="param-desc">Standard Shopify auth header</td></tr>
+            <tr><td class="param-key">Header Value</td><td><span class="param-val">{{ $credentials.apiKey }}</span></td><td class="param-desc">Reference stored credential</td></tr>
+            <tr><td class="param-key">Response Format</td><td><span class="param-val">JSON</span></td><td class="param-desc">Parse the returned body as JSON</td></tr>
+          </table>
+          <div class="note-box tip">💡 Store API keys in n8n Credentials, never hardcode them in the URL or node.</div>
+        </div>
+      </div>
+
+      <!-- 03 Filter -->
+      <div class="param-card" id="pc3">
+        <div class="param-header" onclick="toggle('pc3')">
+          <div class="param-icon" style="background:#E3F5EE;">🔽</div>
+          <span class="param-title">03 · Filter</span>
+          <span class="param-section-tag s1">Section 1</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Conditions</td><td><span class="param-val">AND</span></td><td class="param-desc">All conditions must be true</td></tr>
+            <tr><td class="param-key">Field</td><td><span class="param-val">{{ $json.status }}</span></td><td class="param-desc">Check the status field</td></tr>
+            <tr><td class="param-key">Operation</td><td><span class="param-val">equals</span></td><td class="param-desc">Exact match</td></tr>
+            <tr><td class="param-key">Value</td><td><span class="param-val">active</span></td><td class="param-desc">Only pass active records</td></tr>
+          </table>
+          <div class="note-box tip">💡 Add a second condition: <code>{{ $json.email }}</code> is not empty — to filter out records without emails early.</div>
+        </div>
+      </div>
+
+      <!-- 04 Information Extractor -->
+      <div class="param-card" id="pc4">
+        <div class="param-header" onclick="toggle('pc4')">
+          <div class="param-icon" style="background:#F0EBF9;">🔍</div>
+          <span class="param-title">04 · Information Extractor</span>
+          <span class="param-section-tag s2">Section 2</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Text</td><td><span class="param-val">{{ $json.description }}</span></td><td class="param-desc">The raw text to extract email from</td></tr>
+            <tr><td class="param-key">Attribute Name</td><td><span class="param-val">email</span></td><td class="param-desc">What to name the extracted field</td></tr>
+            <tr><td class="param-key">Attribute Type</td><td><span class="param-val">string</span></td><td class="param-desc">Expected output type</td></tr>
+            <tr><td class="param-key">Attribute Desc</td><td><span class="param-val">Email address of the contact</span></td><td class="param-desc">Helps AI know what to look for</td></tr>
+            <tr><td class="param-key">Language Model</td><td><span class="param-val">Google Gemini Chat Model</span></td><td class="param-desc">Connected sub-node (Node 08)</td></tr>
+          </table>
+          <div class="note-box info">ℹ️ You can add multiple attributes — e.g., also extract <code>first_name</code>, <code>company</code>, <code>phone</code>.</div>
+        </div>
+      </div>
+
+      <!-- 05 IF -->
+      <div class="param-card" id="pc5">
+        <div class="param-header" onclick="toggle('pc5')">
+          <div class="param-icon" style="background:#F5F3EE;">⚙️</div>
+          <span class="param-title">05 · IF</span>
+          <span class="param-section-tag s2">Section 2</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Condition</td><td><span class="param-val">{{ $json.email }}</span></td><td class="param-desc">The email field from extractor</td></tr>
+            <tr><td class="param-key">Operation</td><td><span class="param-val">is not empty</span></td><td class="param-desc">Check if AI found an email</td></tr>
+            <tr><td class="param-key">True Branch</td><td><span class="param-val">→ Append row in sheet</span></td><td class="param-desc">Email found — save it</td></tr>
+            <tr><td class="param-key">False Branch</td><td><span class="param-val">→ No Operation</span></td><td class="param-desc">No email — skip record</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 06 Append Row in Sheet -->
+      <div class="param-card" id="pc6">
+        <div class="param-header" onclick="toggle('pc6')">
+          <div class="param-icon" style="background:#E3F5EE;">📊</div>
+          <span class="param-title">06 · Append Row in Sheet</span>
+          <span class="param-section-tag s2">Section 2</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Resource</td><td><span class="param-val">Sheet</span></td><td class="param-desc">Operating on a spreadsheet</td></tr>
+            <tr><td class="param-key">Operation</td><td><span class="param-val">Append</span></td><td class="param-desc">Add new row to sheet</td></tr>
+            <tr><td class="param-key">Spreadsheet</td><td><span class="param-val">Leads Database</span></td><td class="param-desc">Select your Google Sheet</td></tr>
+            <tr><td class="param-key">Sheet</td><td><span class="param-val">Sheet1</span></td><td class="param-desc">Target tab name</td></tr>
+            <tr><td class="param-key">Column: email</td><td><span class="param-val">{{ $json.email }}</span></td><td class="param-desc">Map extracted email</td></tr>
+            <tr><td class="param-key">Column: company</td><td><span class="param-val">{{ $json.company }}</span></td><td class="param-desc">Map company name</td></tr>
+            <tr><td class="param-key">Column: date</td><td><span class="param-val">{{ $now }}</span></td><td class="param-desc">Timestamp of entry</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 07 No Operation -->
+      <div class="param-card" id="pc7">
+        <div class="param-header" onclick="toggle('pc7')">
+          <div class="param-icon" style="background:#F5F3EE;">⛔</div>
+          <span class="param-title">07 · No Operation, Do Nothing</span>
+          <span class="param-section-tag s2">Section 2</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <div class="note-box warn">⚠️ No parameters required. This node simply terminates the false branch of the IF node gracefully. It prevents n8n from throwing an error when no further action is needed.</div>
+        </div>
+      </div>
+
+      <!-- 08 Gemini Model (Section 2) -->
+      <div class="param-card" id="pc8">
+        <div class="param-header" onclick="toggle('pc8')">
+          <div class="param-icon" style="background:#EEF4FF; font-weight:800; color:#1A6BFF; font-size:16px;">G</div>
+          <span class="param-title">08 · Google Gemini Chat Model</span>
+          <span class="param-section-tag s2">Section 2 · Sub-node</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Credential</td><td><span class="param-val">Google Gemini API Key</span></td><td class="param-desc">Set up in n8n Credentials</td></tr>
+            <tr><td class="param-key">Model</td><td><span class="param-val">gemini-1.5-flash</span></td><td class="param-desc">Fast, cost-efficient model</td></tr>
+            <tr><td class="param-key">Max Output Tokens</td><td><span class="param-val">1024</span></td><td class="param-desc">Limit response length</td></tr>
+            <tr><td class="param-key">Temperature</td><td><span class="param-val">0.2</span></td><td class="param-desc">Low temp = more deterministic extraction</td></tr>
+          </table>
+          <div class="note-box info">ℹ️ This is a sub-node — it plugs into the Information Extractor node above it, not directly into the main flow.</div>
+        </div>
+      </div>
+
+      <!-- 09 Loop Over Items -->
+      <div class="param-card" id="pc9">
+        <div class="param-header" onclick="toggle('pc9')">
+          <div class="param-icon" style="background:#FFF5E0;">🔄</div>
+          <span class="param-title">09 · Loop Over Items</span>
+          <span class="param-section-tag s3">Section 3</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Batch Size</td><td><span class="param-val">1</span></td><td class="param-desc">Process one item at a time</td></tr>
+            <tr><td class="param-key">Options</td><td><span class="param-val">Reset (off)</span></td><td class="param-desc">Keep loop running until all items done</td></tr>
+          </table>
+          <div class="note-box tip">💡 Batch size of 1 combined with the Wait node controls send rate effectively.</div>
+        </div>
+      </div>
+
+      <!-- 10 Wait -->
+      <div class="param-card" id="pc10">
+        <div class="param-header" onclick="toggle('pc10')">
+          <div class="param-icon" style="background:#F0EBF9;">⏸️</div>
+          <span class="param-title">10 · Wait</span>
+          <span class="param-section-tag s3">Section 3</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Resume</td><td><span class="param-val">After Time Interval</span></td><td class="param-desc">Pauses execution for set duration</td></tr>
+            <tr><td class="param-key">Amount</td><td><span class="param-val">2</span></td><td class="param-desc">Duration value</td></tr>
+            <tr><td class="param-key">Unit</td><td><span class="param-val">Minutes</span></td><td class="param-desc">2-minute delay between sends</td></tr>
+          </table>
+          <div class="note-box warn">⚠️ Do not set this below 1 minute — very fast email loops can trigger spam filters.</div>
+        </div>
+      </div>
+
+      <!-- 11 Information Extractor 1 -->
+      <div class="param-card" id="pc11">
+        <div class="param-header" onclick="toggle('pc11')">
+          <div class="param-icon" style="background:#F0EBF9;">🔍</div>
+          <span class="param-title">11 · Information Extractor 1</span>
+          <span class="param-section-tag s3">Section 3</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Text</td><td><span class="param-val">{{ $json.raw_text }}</span></td><td class="param-desc">Input data to extract from</td></tr>
+            <tr><td class="param-key">Attribute 1 Name</td><td><span class="param-val">first_name</span></td><td class="param-desc">Person's first name</td></tr>
+            <tr><td class="param-key">Attribute 2 Name</td><td><span class="param-val">company_name</span></td><td class="param-desc">Company name</td></tr>
+            <tr><td class="param-key">Attribute 3 Name</td><td><span class="param-val">product_interest</span></td><td class="param-desc">What they're interested in</td></tr>
+            <tr><td class="param-key">Language Model</td><td><span class="param-val">Google Gemini Chat Model 1</span></td><td class="param-desc">Connected sub-node (Node 15)</td></tr>
+          </table>
+          <div class="note-box info">ℹ️ These extracted fields are used to personalise the email body in the next nodes.</div>
+        </div>
+      </div>
+
+      <!-- 12 Edit Fields1 -->
+      <div class="param-card" id="pc12">
+        <div class="param-header" onclick="toggle('pc12')">
+          <div class="param-icon" style="background:#E3F5EE;">✏️</div>
+          <span class="param-title">12 · Edit Fields1</span>
+          <span class="param-section-tag s3">Section 3</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Mode</td><td><span class="param-val">Manual</span></td><td class="param-desc">Define fields manually</td></tr>
+            <tr><td class="param-key">Field: email_to</td><td><span class="param-val">{{ $json.email }}</span></td><td class="param-desc">Recipient email address</td></tr>
+            <tr><td class="param-key">Field: subject</td><td><span class="param-val">Hi {{ $json.first_name }}, ...</span></td><td class="param-desc">Personalised subject line</td></tr>
+            <tr><td class="param-key">Field: body</td><td><span class="param-val">Hi {{ $json.first_name }}, I noticed {{ $json.company_name }}...</span></td><td class="param-desc">Full personalised email body</td></tr>
+            <tr><td class="param-key">Keep Original</td><td><span class="param-val">false</span></td><td class="param-desc">Only pass the new fields forward</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 13 Send a message (Gmail) -->
+      <div class="param-card" id="pc13">
+        <div class="param-header" onclick="toggle('pc13')">
+          <div class="param-icon" style="background:#FFE8E3;">✉️</div>
+          <span class="param-title">13 · Send a Message (Gmail)</span>
+          <span class="param-section-tag s3">Section 3</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Credential</td><td><span class="param-val">Gmail OAuth2</span></td><td class="param-desc">Authorised Gmail account</td></tr>
+            <tr><td class="param-key">Resource</td><td><span class="param-val">Message</span></td><td class="param-desc">Send an email message</td></tr>
+            <tr><td class="param-key">Operation</td><td><span class="param-val">Send</span></td><td class="param-desc">Send operation</td></tr>
+            <tr><td class="param-key">To</td><td><span class="param-val">{{ $json.email_to }}</span></td><td class="param-desc">Recipient from Edit Fields node</td></tr>
+            <tr><td class="param-key">Subject</td><td><span class="param-val">{{ $json.subject }}</span></td><td class="param-desc">Subject from Edit Fields node</td></tr>
+            <tr><td class="param-key">Message</td><td><span class="param-val">{{ $json.body }}</span></td><td class="param-desc">Body from Edit Fields node</td></tr>
+            <tr><td class="param-key">Body Content Type</td><td><span class="param-val">HTML</span></td><td class="param-desc">Allows formatted HTML emails</td></tr>
+          </table>
+          <div class="note-box warn">⚠️ Make sure Gmail OAuth2 credentials are connected. You must allow n8n access in your Google account settings.</div>
+        </div>
+      </div>
+
+      <!-- 14 Append or Update Row -->
+      <div class="param-card" id="pc14">
+        <div class="param-header" onclick="toggle('pc14')">
+          <div class="param-icon" style="background:#E3F5EE;">📊</div>
+          <span class="param-title">14 · Append or Update Row in Sheet</span>
+          <span class="param-section-tag s3">Section 3</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Resource</td><td><span class="param-val">Sheet</span></td><td class="param-desc">Google Sheets operation</td></tr>
+            <tr><td class="param-key">Operation</td><td><span class="param-val">Append or Update</span></td><td class="param-desc">Create row or update if exists</td></tr>
+            <tr><td class="param-key">Spreadsheet</td><td><span class="param-val">Leads Database</span></td><td class="param-desc">Same sheet as node 06</td></tr>
+            <tr><td class="param-key">Lookup Column</td><td><span class="param-val">email</span></td><td class="param-desc">Unique key to match existing rows</td></tr>
+            <tr><td class="param-key">Column: email_sent</td><td><span class="param-val">true</span></td><td class="param-desc">Mark email as sent</td></tr>
+            <tr><td class="param-key">Column: sent_at</td><td><span class="param-val">{{ $now }}</span></td><td class="param-desc">Timestamp of send</td></tr>
+          </table>
+          <div class="note-box tip">💡 Using "Append or Update" with email as lookup key prevents duplicate rows.</div>
+        </div>
+      </div>
+
+      <!-- 15 Gemini Model 1 -->
+      <div class="param-card" id="pc15">
+        <div class="param-header" onclick="toggle('pc15')">
+          <div class="param-icon" style="background:#EEF4FF; font-weight:800; color:#1A6BFF; font-size:16px;">G</div>
+          <span class="param-title">15 · Google Gemini Chat Model 1</span>
+          <span class="param-section-tag s3">Section 3 · Sub-node</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="param-body">
+          <table class="param-table">
+            <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
+            <tr><td class="param-key">Credential</td><td><span class="param-val">Google Gemini API Key</span></td><td class="param-desc">Same API key as Node 08</td></tr>
+            <tr><td class="param-key">Model</td><td><span class="param-val">gemini-1.5-flash</span></td><td class="param-desc">Fast and capable model</td></tr>
+            <tr><td class="param-key">Max Output Tokens</td><td><span class="param-val">1024</span></td><td class="param-desc">Enough for name/company extraction</td></tr>
+            <tr><td class="param-key">Temperature</td><td><span class="param-val">0.2</span></td><td class="param-desc">Deterministic for structured output</td></tr>
+          </table>
+          <div class="note-box info">ℹ️ This is a separate sub-node instance from Node 08 — it's dedicated to the email personalisation extraction in Section 3.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Built with n8n · Google Gemini AI · Google Sheets · Gmail &nbsp;|&nbsp; Lead Enrichment &amp; Email Outreach Workflow Documentation
+</footer>
+
+<script>
+  function toggle(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+  // Open first card by default
+  document.getElementById('pc1').classList.add('open');
+</script>
+</body>
+</html>
